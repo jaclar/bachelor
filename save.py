@@ -3,7 +3,7 @@ import pylab as pl
 import datetime
 
 def save(xi_var,xi_mean,gamma,delta,g,f,data,dir):
-    meta = np.array([xi_var,xi_mean,gamma,delta,g,f])
+    meta = np.array([xi_var,xi_mean,gamma,delta,g,f(1)])
     timestamp = datetime.datetime.isoformat(datetime.datetime.now())
     np.savez("%s/data-%s.npz"%(dir,timestamp),*data,meta=meta)
     for l in data[1:]:
