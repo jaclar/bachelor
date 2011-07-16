@@ -13,6 +13,9 @@ def lan(a,t,delta,g,gamma,xi,f):
         # + np.sqrt(2*gamma)*xi()*(1.0+1.0j)
     return np.array([r.real,r.imag],dtype=np.float64)
 
+def noise(delta,g,gamma,xi,f):
+    return np.sqrt(2*gamma)*xi()
+
 def run(y0, t, btw, delta, g, gamma, f, n = 1):
     print y0, delta, g, gamma
     data = [t]
@@ -26,7 +29,7 @@ def run(y0, t, btw, delta, g, gamma, f, n = 1):
     for y in y0:
         for i in range(n):
             print y
-            k = ku.RK4(lan,y,t,btw, \
+            k = ku.RK4(lan,y,t,btw,noise, \
                           args=(delta,g,gamma,xi,f))
             # k = integrate.odeint(lan,y,t, \
             #                        args=(delta,g,gamma,xi,f))
@@ -38,17 +41,17 @@ f_array = [lambda t: 0.3,lambda t: 1.0, lambda t: 3.0]
 f_array = [lambda t: 0.2]
 
 gamma_array = np.arange(0.001,0.1,0.02)
-gamma_array = [0.05]
+gamma_array = [0.5]
 
 # delta_array = np.arange(0.0,1.0,0.3)
 delta_array = [2.0]
 
-t = np.arange(0,80.0,0.05)
+t = np.arange(0,80.0,0.005)
 btw = 100
 y0 = np.array([-0.5,0.9],dtype=np.float64)
 
 # g_array = np.arange(0.0,1.0,0.3)
-g_array = [0.1]
+g_array = [0.01]
 
 n = 1
 
@@ -58,7 +61,7 @@ for x in np.arange(-1.0,1.0,0.5):
     for y in np.arange(-1.0,1.0,0.1):
         y0.append((x,y))
 
-y0 = [.01,0.3]
+y0 = [3.0,4.8]
 n = 1
 
 
