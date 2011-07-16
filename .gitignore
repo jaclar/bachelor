@@ -3,5 +3,6 @@
 *.pyc
 pic-*
 data-*
-animation/
-data/
+animation*/
+data*/
+test.py
