@@ -3,6 +3,7 @@ import pylab as pl
 import kutta as ku
 import scipy.integrate as integrate
 import save
+from multiprocessing import Process
 
 def lan(a,t,delta,g,gamma,xi,f):
     a = a[0] + 1.0j*a[1]
@@ -17,7 +18,6 @@ def noise(delta,g,gamma,xi,f):
     return np.sqrt(2*gamma)*xi()
 
 def run(y0, t, btw, delta, g, gamma, f, n = 1):
-    print "run the worker"
     print y0, delta, g, gamma
     data = [t]
     xi_mean = 0.0
@@ -27,6 +27,7 @@ def run(y0, t, btw, delta, g, gamma, f, n = 1):
     y0 = np.array(y0)
     if y0.shape == (2,):
         y0 = np.array([y0])
+
     for y in y0:
         for i in range(n):
             print y
@@ -36,6 +37,7 @@ def run(y0, t, btw, delta, g, gamma, f, n = 1):
             #                        args=(delta,g,gamma,xi,f))
             data.append(k)
     save.save(xi_var,xi_mean,gamma,delta,g,f,data,"data")
+        
 # f_array = [lambda t: p for p in np.arange(0.0,1.0,0.3)]
 f_array = [lambda t: 0.3,lambda t: 1.0, lambda t: 3.0]
 f_array = [lambda t: 10.0]
@@ -51,7 +53,7 @@ btw = 10
 y0 = np.array([-0.5,0.9],dtype=np.float64)
 
 # g_array = np.arange(0.0,1.0,0.3)
-g_array = [-0.001]
+g_array = [-0.001,0,0.0001,0.00002]
 y0 = []
 
 for x in np.arange(-1.0,1.0,0.5):
@@ -61,5 +63,19 @@ for x in np.arange(-1.0,1.0,0.5):
 y0 = [300.0,400.8]
 n = 4
 
-pool = mp.Pool(processes=4)
-result = pool.apply_async(run,[(lan,y0,t,g,gamma,xi,f,n) for g in g_array])
+pro = []
+
+for g in g_array:
+    for f in f_array:
+        for gamma in gamma_array:
+            for delta in delta_array:
+                p = Process(target=run,args=(y0,t,btw,delta,g,gamma,f,n))
+                p.start()
+                pro.append(p)
+
+
+for p in pro:
+    p.join()
+                         
+    
+
