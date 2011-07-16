@@ -1,52 +1,65 @@
 import numpy as np
 import pylab as pl
 import kutta as ku
+import scipy.integrate as integrate
 import save
-import multiprocessing as mp
-import Queue
 
 def lan(a,t,delta,g,gamma,xi,f):
-    a0 = -1*delta*a[1]              \
-         + g*(a[0]**2+a[1]**2)*a[1] \
-         - gamma*a[0]               \
-         + f(t)                     \
-         + xi()
-    a1 =   delta*a[0]               \
-         - g*(a[0]**2+a[1]**2)*a[0] \
-         - gamma*a[1]               \
-         + f(t)                     \
-         + xi()
-    return np.array([a0,a1])
+    a = a[0] + 1.0j*a[1]
+    r = 1.0j*delta*a \
+        - gamma*a \
+        + f(t)*(1.0 + 1.0j) \
+        + g*np.abs(a)**2*a 
+        # + np.sqrt(2*gamma)*xi()*(1.0+1.0j)
+    return np.array([r.real,r.imag],dtype=np.float64)
 
+def noise(delta,g,gamma,xi,f):
+    return np.sqrt(2*gamma)*xi()
 
-def integrate(lan, y0, t, delta, g, gamma, xi, f, n):
+def run(y0, t, btw, delta, g, gamma, f, n = 1):
     print "run the worker"
     print y0, delta, g, gamma
     data = [t]
-    for i in range(n):
-        k = ku.RK4(lan,y0,t, \
-                       args=(delta,g,gamma,xi,f))
-        data.append(k)
-    save.save(xi_var,xi_mean,gamma,delta,g,data)
-    print "calling the worker finished"
-        
+    xi_mean = 0.0
+    xi_var = 1.0
+    xi = lambda: np.random.normal(xi_mean,xi_var)
 
-xi_var = 0.001
-xi_mean = 0.0
-xi = lambda: np.random.normal(xi_mean,xi_var)
+    y0 = np.array(y0)
+    if y0.shape == (2,):
+        y0 = np.array([y0])
+    for y in y0:
+        for i in range(n):
+            print y
+            k = ku.RK4(lan,y,t,btw,noise, \
+                          args=(delta,g,gamma,xi,f))
+            # k = integrate.odeint(lan,y,t, \
+            #                        args=(delta,g,gamma,xi,f))
+            data.append(k)
+    save.save(xi_var,xi_mean,gamma,delta,g,f,data,"data")
+# f_array = [lambda t: p for p in np.arange(0.0,1.0,0.3)]
+f_array = [lambda t: 0.3,lambda t: 1.0, lambda t: 3.0]
+f_array = [lambda t: 10.0]
 
-f = lambda t: 2.0
+gamma_array = np.arange(0.001,0.1,0.02)
+gamma_array = [0.5]
 
-gamma = 0.05
-delta = 0.03
+# delta_array = np.arange(0.0,1.0,0.3)
+delta_array = [1.0]
 
-t = np.arange(0,500.0,0.05)
-y0 = [0.1,0.2]
+t = np.arange(0,80.0,0.005)
+btw = 10
+y0 = np.array([-0.5,0.9],dtype=np.float64)
 
-g_array = np.arange(0.0,2.0,0.2)
+# g_array = np.arange(0.0,1.0,0.3)
+g_array = [-0.001]
+y0 = []
 
-n = 5
+for x in np.arange(-1.0,1.0,0.5):
+    for y in np.arange(-1.0,1.0,0.1):
+        y0.append((x,y))
+
+y0 = [300.0,400.8]
+n = 4
 
 pool = mp.Pool(processes=4)
-result = pool.apply_async(integrate,[(lan,y0,t,g,gamma,xi,f,n) for g in g_array])
-
+result = pool.apply_async(run,[(lan,y0,t,g,gamma,xi,f,n) for g in g_array])

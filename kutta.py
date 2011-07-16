@@ -4,50 +4,48 @@ import scipy.integrate as spi
 import numpy as np
 import pylab as pl
 
-def RK4_step(f,h,x,t,args=()):
+def RK4_step(f,h,x,t,noise,args=()):
     t = np.array(t)
     x = np.array(x)
     k1 = h*f(x,t,*args)
     k2 = h*f(x+1.0/2*k1, t+1.0/2*h, *args)
     k3 = h*f(x+1.0/2*k2, t+1.0/2*h, *args)
     k4 = h*f(x+k3, t+h, *args)
-    return x + 1.0/6*k1 + 1.0/3*k2 + 1.0/3*k3 + 1.0/6*k4
+    st = np.sqrt(h)*noise(*args)
+    return x + 1.0/6*k1 + 1.0/3*k2 + 1.0/3*k3 + 1.0/6*k4 + st
 
-def RK4(f,x0,t,args=()):
-    lt = len(t)
+def RK4(f,x0,t,btw,noise,args=()):
+    steps = len(t)*btw
+    h = (t[1]-t[0])/btw
+
     if np.isscalar(x0):
         lx = 1
     else:
         lx = len(x0)
-    x = np.zeros((lt,lx))
+    x = np.zeros((len(t),lx))
     x[0] = x0
-    for i in range(1,lt):
-        h = t[i]-t[i-1]
-        x[i] = RK4_step(f,h,x[i-1],t[i-1],args=args)
+
+    np.seterr(all='raise')
+
+    try:
+        for i in range(1,steps):
+            x[i//btw] = RK4_step(f,h,x[(i-1)//btw],t[(i-1)//btw],noise,args=args)
+            # print i//btw, (i-1)//btw, x[i//btw]
+    except FloatingPointError:
+        print "diverged :("
     return x
+
 
 # def f(x,t):
 #     return x
 
-# N = 40
-# x = np.zeros(N+1)
-# e = np.zeros(N+1)
-# h = 0.1
-
-# x[0]=1.0
-# e[0]=1.0
-# t = np.arange(0.0,2.0,0.1)
-
-# # for i in range(N):
-# #     x[i+1] = RK4_step(f,h,x[i],h*(i))
-# #     print h*(i)
-# #     e[i+1] = np.exp(h*(i+1))
+# t = np.arange(0.0,20.0,0.01)
 
 # o = spi.odeint(f,1.0,t)
-# x = RK4(f,1.0,t)
+# x = RK4(f,1.0,t,btw=10)
 
 # print x
-# print o
+
 # pl.plot(x,label="kutta")
 # #pl.plot(e,label="kutta-exp-theo")
 # pl.plot(o,label="odeint")
