@@ -26,7 +26,7 @@ min = [np.min(min[:,0]),np.min(min[:,1])]
 print min, max
 
 # initiate figure
-fig = pl.figure(figsize=(max[0]*4,max[1]*4))
+fig = pl.figure(figsize=(5,abs((max[1]-min[1])/(max[0]-min[0]))*5))
 ax = fig.add_subplot(111)
 ax.set_autoscale_on(False)
 ax.set_xlim(min[0],max[0])
