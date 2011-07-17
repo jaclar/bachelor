@@ -43,17 +43,17 @@ f_array = [lambda t: 0.3,lambda t: 1.0, lambda t: 3.0]
 f_array = [lambda t: 10.0]
 
 gamma_array = np.arange(0.001,0.1,0.02)
-gamma_array = [0.1,0.5,1.0]
+gamma_array = [0.001,0.01,0.1]
 
 # delta_array = np.arange(0.0,1.0,0.3)
-delta_array = [0.0,0.5,1.0]
+delta_array = [-0.3,0.0,0.5]
 
 t = np.arange(0,80.0,0.005)
 btw = 10
 y0 = np.array([-0.5,0.9],dtype=np.float64)
 
 # g_array = np.arange(0.0,1.0,0.3)
-g_array = [-0.01,-0.001,0,0.0001,0.00002]
+g_array = [-0.3,-0.01,-0.001,0,0.00002,0.02]
 y0 = []
 
 for x in np.arange(-1.0,1.0,0.5):
@@ -65,10 +65,20 @@ n = 4
 
 pro = []
 
+MAXP = 6
+
 for g in g_array:
     for f in f_array:
         for gamma in gamma_array:
             for delta in delta_array:
+                if len(pro) == MAXP:
+                    i = 0
+                    while True:
+                        if not pro[i%MAXP].is_alive():
+                            del pro[i%MAXP]
+                            break
+                        i+=1
+                print "======== %d ======="%len(pro)
                 p = Process(target=run,args=(y0,t,btw,delta,g,gamma,f,n))
                 p.start()
                 pro.append(p)
