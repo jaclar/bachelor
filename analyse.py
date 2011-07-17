@@ -9,6 +9,9 @@ filename = os.sys.argv[1]
 
 meta, t, plots = save.load(filename)
 
+for key,value in meta.items():
+    print key, ":", value
+
 for p in plots:
     pl.plot(p[:,0],p[:,1])
 pl.show()
