@@ -15,7 +15,7 @@ def lan(a,t,delta,g,gamma,xi,f):
     return np.array([r.real,r.imag],dtype=np.float64)
 
 def noise(delta,g,gamma,xi,f):
-    return np.sqrt(2*gamma)*xi()
+    return np.sqrt(gamma)*xi()
 
 def run(y0, t, btw, delta, g, gamma, f, n = 1):
     print y0, delta, g, gamma
@@ -40,25 +40,27 @@ def run(y0, t, btw, delta, g, gamma, f, n = 1):
         
 # f_array = [lambda t: p for p in np.arange(0.0,1.0,0.3)]
 f_array = [lambda t: 0.3,lambda t: 1.0, lambda t: 3.0]
-f_array = [lambda t: 10.0]
+f_array = [lambda t: 0.0]
 
 gamma_array = np.arange(0.001,0.1,0.02)
 gamma_array = [0.1]
 
 # delta_array = np.arange(0.0,1.0,0.3)
-delta_array = [2.0]
+delta_array = [0.0]
 
 t = np.arange(0,80.0,0.005)
-btw = 10
+btw = 1
 y0 = np.array([-0.5,0.9],dtype=np.float64)
 
 # g_array = np.arange(0.0,1.0,0.3)
-g_array = [-2.0,-0.1,-0.01,0.0001,0.01,0.1]
+g_array = [0.001,0.002]
 y0 = []
 
 for x in np.arange(-200.0,200.0,50):
     for y in np.arange(-200.0,200.0,50):
         y0.append((x,y))
+
+y0 = [(6.0,-6.0),(0.0,-6.0),(-6.0,-6.0),(0.0,0.0),(6.0,6.0),(0.0,6.0),(-6.0,6.0)]
 
 n = 1
 

@@ -11,7 +11,7 @@ def RK4_step(f,h,x,t,noise,args=()):
     k2 = h*f(x+1.0/2*k1, t+1.0/2*h, *args)
     k3 = h*f(x+1.0/2*k2, t+1.0/2*h, *args)
     k4 = h*f(x+k3, t+h, *args)
-    st = np.sqrt(h)*noise(*args)
+    st = np.sqrt(h)*np.array([noise(*args) for i in np.ones_like(x)])
     return x + 1.0/6*k1 + 1.0/3*k2 + 1.0/3*k3 + 1.0/6*k4 + st
 
 def RK4(f,x0,t,btw,noise,args=()):

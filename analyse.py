@@ -28,6 +28,7 @@ for p in plots:
     # pl.acorr(p[:,0],maxlags=ml,color="blue")
     # pl.acorr(p[:,1],maxlags=ml,color="red")
     # pl.show()
+    print p[0,0],p[0,1]
     x, y = co.icor(p,maxlags=ml,plot="phase")
     pl.subplot(211)
     pl.title("$\langle a(t)a(t)\\rangle$")
