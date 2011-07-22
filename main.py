@@ -48,8 +48,8 @@ gamma_array = [0.1,0.01]
 # delta_array = np.arange(0.0,1.0,0.3)
 delta_array = [1.0,0.1,0.0]
 
-t = np.arange(0,80.0,0.005)
-btw = 1
+t = np.arange(0,200.0,0.005)
+btw = 10
 y0 = np.array([-0.5,0.9],dtype=np.float64)
 
 # g_array = np.arange(0.0,1.0,0.3)
