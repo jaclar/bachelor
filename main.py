@@ -43,10 +43,10 @@ f_array = [lambda t: 0.3,lambda t: 1.0, lambda t: 3.0]
 f_array = [lambda t: 10.0]
 
 gamma_array = np.arange(0.001,0.1,0.02)
-gamma_array = [0.1]
+gamma_array = [0.1,0.01]
 
 # delta_array = np.arange(0.0,1.0,0.3)
-delta_array = [1.0,0.1]
+delta_array = [1.0,0.1,0.0]
 
 t = np.arange(0,80.0,0.005)
 btw = 1
@@ -61,8 +61,8 @@ for x in np.arange(-200.0,200.0,50):
         y0.append((x,y))
 
 y0 = [(50.0,-50.0),(0.0,-50.0),(-50.0,-50.0),(0.0,0.0),(50.0,50.0),(0.0,50.0),(-50.0,50.0)]
-y0 = [(50.0,0.0)]
-n = 3
+y0 = [(0.01,0.01)]
+n = 4
 
 pro = []
 
