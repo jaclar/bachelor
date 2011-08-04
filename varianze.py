@@ -15,6 +15,9 @@ for p in plots:
 var = var/len(plots)
 
 pl.plot(t,var)
+pl.title("Varianz")
+pl.xlabel("$t$")
+pl.ylabel("$\langle x^2 \\rangle$")
 pl.show()
 
 
@@ -25,4 +28,7 @@ for p in plots:
 mean /= len(plots)
 
 pl.plot(t,mean)
+pl.title("Mittelwert")
+pl.xlabel("$t$")
+pl.ylabel("$\langle x \\rangle$")
 pl.show()
