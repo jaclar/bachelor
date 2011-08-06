@@ -7,7 +7,7 @@ import datetime
 
 filename = os.sys.argv[1]
 
-frames = 1000
+frames = 500
 
 meta, t, plots = save.load(filename)
 
@@ -43,6 +43,6 @@ for i in range(0,l,stepsize):
     ax.set_ylim(min[1],max[1])
 
     for p in range(len(plots)):
-        ax.plot(plots[p][i-50:i+1,0],plots[p][i-50:i+1,1],)
+        ax.plot(plots[p][i-300:i+1,0],plots[p][i-300:i+1,1],)
         ax.plot(plots[p][i,0],plots[p][i,1],'o')
     fig.savefig("%s/%05d.png"%(dir,i),format='png',dpi=100)

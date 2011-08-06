@@ -16,7 +16,14 @@ def lan(a,t,delta,g,gamma,xi,f):
     return np.array([r.real,r.imag],dtype=np.float64)
 
 def noise(delta,g,gamma,xi,f):
+    # return 0
     return np.sqrt(gamma)*xi()
+
+def oup(a,t,theta,mu,sigma):
+    return theta*(mu-a)
+
+def oup_noise(theta,mu,sigma):
+    return sigma*np.random.normal(0.0,1.0) 
 
 def run(y0, t, btw, delta, g, gamma, f, n = 1):
     print y0, delta, g, gamma
@@ -38,6 +45,9 @@ def run(y0, t, btw, delta, g, gamma, f, n = 1):
             #                         args=(delta,g,gamma,xi,f))
             k = eu.euler(lan,y,t,btw,noise, \
                              args=(delta,g,gamma,xi,f))
+
+            # k = eu.euler(oup,y,t,btw,oup_noise, \
+            #                  args=(2.0,0.0,1.0))
             data.append(k)
     save.save(xi_var,xi_mean,gamma,delta,g,f,data,"data")
         
@@ -51,19 +61,19 @@ gamma_array = [.012]
 # delta_array = np.arange(0.0,1.0,0.3)
 delta_array = [7.44]
 
-t = np.arange(0,600.0,0.1)
-btw = 10
+t = np.arange(0,1000.0,0.01)
+btw = 100
 
 # g_array = np.arange(0.0,1.0,0.3)
 g_array = [0.009]
 y0 = []
 
-for x in np.arange(-200.0,200.0,50):
-    for y in np.arange(-200.0,200.0,50):
-        y0.append((x,y))
+# for x in np.arange(-30.0,30.0,5):
+#     for y in np.arange(-30.0,30.0,5):
+#         y0.append((x,y))
 
-y0 = [(16.57,-23.3),(17,24),(-17,24),(-17,-24)]
-n = 10
+y0 = [ (16.5, -23.5)]
+n = 50
 
 pro = []
 
