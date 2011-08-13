@@ -20,7 +20,6 @@ pl.xlabel("$t$")
 pl.ylabel("$\langle x^2 \\rangle$")
 pl.show()
 
-
 mean = np.zeros_like(plots[0])
 for p in plots:
     mean += p

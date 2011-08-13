@@ -8,10 +8,10 @@ from multiprocessing import Process
 
 def lan(a,t,delta,g,gamma,xi,f):
     a = a[0] + 1.0j*a[1]
-    r = 1.0j*delta*a \
+    r = - 1.0j*delta*a \
         - gamma*a \
         + f(t)  \
-        - 1.0j*g*np.abs(a)**2*a 
+        + 1.0j*g*np.abs(a)**2*a 
         # + np.sqrt(2*gamma)*xi()*(1.0+1.0j)
     return np.array([r.real,r.imag],dtype=np.float64)
 
@@ -56,12 +56,12 @@ f_array = [lambda t: 0.3,lambda t: 1.0, lambda t: 3.0]
 f_array = [lambda t: 0.6]
 
 gamma_array = np.arange(0.001,0.1,0.02)
-gamma_array = [.012]
+gamma_array = [0.012]
 
 # delta_array = np.arange(0.0,1.0,0.3)
 delta_array = [7.44]
 
-t = np.arange(0,1000.0,0.01)
+t = np.arange(0,500.0,0.01)
 btw = 100
 
 # g_array = np.arange(0.0,1.0,0.3)
@@ -72,8 +72,8 @@ y0 = []
 #     for y in np.arange(-30.0,30.0,5):
 #         y0.append((x,y))
 
-y0 = [ (16.5, -23.5)]
-n = 50
+y0 = [ (16.5712,-23.5362586)]
+n = 1
 
 pro = []
 
