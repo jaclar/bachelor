@@ -26,8 +26,8 @@ for p in plots:
     pl.plot(t,p[:,0]**2+p[:,1]**2)
     pl.ylabel("$a^*a=n$")
     pl.xlabel("$t$")
-    pl.title("Moden")
-pl.plot(t,n_avg/len(plots))
+    # pl.title("Moden")
+# pl.plot(t,n_avg/len(plots))
 pl.show()
 
 pl.ylabel("$a^*a=n$")
@@ -39,7 +39,8 @@ pl.show()
 
 ml = 2000
 av_corr = np.zeros_like(t,dtype=np.complex)
-
+i = 0
+n = 0
 for p in plots:
     # pl.acorr(p[:,0]+1j*p[:,1],maxlags=ml)
     # pl.show()
@@ -67,14 +68,17 @@ for p in plots:
     # pl.subplot(212)
     # pl.plot(x,np.imag(iy))
     # pl.show()
-    
-    x = p[:,0] + 1.0j*p[:,1]
-    corr = np.correlate(x,x,"same")
-    # pl.plot(np.real(corr))
-    # pl.plot(np.imag(corr))
-    # pl.show()
+    n += 1
+    if (p[-1,0]**2 +  p[-1,1]**2) > 700:
+        x = p[:,0] + 1.0j*p[:,1]
+        corr = np.correlate(x,x,"same")
+        # pl.plot(np.real(corr))
+        # pl.plot(np.imag(corr))
+        # pl.show()
 
-    av_corr += corr
+        av_corr += corr
+        i += 1
+        print i,n
 
 av_corr/= len(plots)
 pl.plot(np.real(av_corr))

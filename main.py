@@ -8,10 +8,10 @@ from multiprocessing import Process
 
 def lan(a,t,delta,g,gamma,xi,f):
     a = a[0] + 1.0j*a[1]
-    r = - 1.0j*delta*a \
+    r = 1.0j*delta*a \
         - gamma*a \
         + f(t)  \
-        + 1.0j*g*np.abs(a)**2*a 
+        - 1.0j*g*np.abs(a)**2*a 
         # + np.sqrt(2*gamma)*xi()*(1.0+1.0j)
     return np.array([r.real,r.imag],dtype=np.float64)
 
@@ -42,9 +42,9 @@ def run(y0, t, btw, delta, g, gamma, f, n = 1):
             # k = ku.RK4(lan,y,t,btw,noise, \
             #              args=(delta,g,gamma,xi,f))
             # k = integrate.odeint(lan,y,t, \
-            #                         args=(delta,g,gamma,xi,f))
+            #                        args=(delta,g,gamma,xi,f))
             k = eu.euler(lan,y,t,btw,noise, \
-                             args=(delta,g,gamma,xi,f))
+                            args=(delta,g,gamma,xi,f))
 
             # k = eu.euler(oup,y,t,btw,oup_noise, \
             #                  args=(2.0,0.0,1.0))
@@ -53,7 +53,7 @@ def run(y0, t, btw, delta, g, gamma, f, n = 1):
         
 # f_array = [lambda t: p for p in np.arange(0.0,1.0,0.3)]
 f_array = [lambda t: 0.3,lambda t: 1.0, lambda t: 3.0]
-f_array = [lambda t: 0.6]
+f_array = [lambda t: 50.0]
 
 gamma_array = np.arange(0.001,0.1,0.02)
 gamma_array = [0.012]
@@ -61,7 +61,7 @@ gamma_array = [0.012]
 # delta_array = np.arange(0.0,1.0,0.3)
 delta_array = [7.44]
 
-t = np.arange(0,500.0,0.01)
+t = np.arange(0,50.0,0.01)
 btw = 100
 
 # g_array = np.arange(0.0,1.0,0.3)
@@ -72,8 +72,8 @@ y0 = []
 #     for y in np.arange(-30.0,30.0,5):
 #         y0.append((x,y))
 
-y0 = [ (16.5712,-23.5362586)]
-n = 1
+y0 = [ (0.01,-31.5)]
+n = 10
 
 pro = []
 
