@@ -53,26 +53,26 @@ def run(y0, t, btw, delta, g, gamma, f, n = 1):
         
 # f_array = [lambda t: p for p in np.arange(0.0,1.0,0.3)]
 f_array = [lambda t: 0.3,lambda t: 1.0, lambda t: 3.0]
-f_array = [lambda t: 50.0]
+f_array = [lambda t: 0.0]
 
 gamma_array = np.arange(0.001,0.1,0.02)
-gamma_array = [0.012]
+gamma_array = [1.0,0.1,5.0]
 
 # delta_array = np.arange(0.0,1.0,0.3)
-delta_array = [7.44]
+delta_array = [0.0]
 
-t = np.arange(0,50.0,0.01)
-btw = 100
+t = np.arange(0,5.0,0.01)
+btw = 5
 
 # g_array = np.arange(0.0,1.0,0.3)
-g_array = [0.009]
+g_array = [0.1,1.0,-0.5]
 y0 = []
 
 # for x in np.arange(-30.0,30.0,5):
 #     for y in np.arange(-30.0,30.0,5):
 #         y0.append((x,y))
 
-y0 = [ (0.01,-31.5)]
+y0 = [ (0.0,0.0)]
 n = 10
 
 pro = []
