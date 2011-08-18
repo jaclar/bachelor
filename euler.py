@@ -4,14 +4,17 @@ import scipy.integrate as spi
 import numpy as np
 import pylab as pl
 
-def euler_step(f,h,x,t,noise,args=()):
+def euler_step(f,h,x,t,D,xi1,xi2,args=()):
     t = np.array(t)
     x = np.array(x)
     k1 = h*f(x,t,*args)
-    st = np.sqrt(h)*np.array([noise(*args) for i in np.ones_like(x)])
+    st = np.sqrt(h)*np.array([np.real(D[0,0]*xi1+D[0,1]*xi2),
+                              np.imag(D[0,0]*xi1+D[0,1]*xi2),
+                              np.real(D[1,0]*xi1+D[1,1]*xi2),
+                              np.imag(D[1,0]*xi1+D[1,1]*xi2)])
     return x + k1 + st
 
-def euler(f,x0,t,btw,noise,args=()):
+def euler(f,x0,t,btw,D,xi1,xi2,args=()):
     steps = len(t)*btw
     h = (t[1]-t[0])/btw
 
@@ -26,7 +29,7 @@ def euler(f,x0,t,btw,noise,args=()):
 
     try:
         for i in range(1,steps):
-            x[i//btw] = euler_step(f,h,x[(i-1)//btw],t[(i-1)//btw],noise,args=args)
+            x[i//btw] = euler_step(f,h,x[(i-1)//btw],t[(i-1)//btw],D,xi1[i],xi2[i],args=args)
             # print i//btw, (i-1)//btw, x[i//btw]
     except FloatingPointError:
         print "diverged :("
