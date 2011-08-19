@@ -8,10 +8,10 @@ def euler_step(f,h,x,t,D,xi1,xi2,args=()):
     t = np.array(t)
     x = np.array(x)
     k1 = h*f(x,t,*args)
-    st = np.sqrt(h)*np.array([np.real(D[0,0]*xi1+D[0,1]*xi2),
-                              np.imag(D[0,0]*xi1+D[0,1]*xi2),
-                              np.real(D[1,0]*xi1+D[1,1]*xi2),
-                              np.imag(D[1,0]*xi1+D[1,1]*xi2)])
+    st = np.sqrt(h)*np.array([np.real(D[0,0]*xi1 + D[0,1]*xi2),
+                              np.imag(D[0,0]*xi1 + D[0,1]*xi2),
+                              np.real(D[1,0]*xi1 + D[1,1]*xi2),
+                              np.imag(D[1,0]*xi1 + D[1,1]*xi2)])
     return x + k1 + st
 
 def euler(f,x0,t,btw,D,xi1,xi2,args=()):

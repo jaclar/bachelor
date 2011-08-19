@@ -8,13 +8,27 @@ import scipy as sp
 import save
 from multiprocessing import Process
 
-def lan(a,t,delta,g,gamma,f):
-    a = a[0] + 1.0j*a[1]
+def lan(x,t,delta,g,gamma,f):
+    a = x[0] + 1.0j*x[1]
+    ac = x[2] + 1.0j*x[3]
     r = 1.0j*delta*a \
         - gamma*a \
         + f  \
-        - 1.0j*g*np.abs(a)**2*a 
-    rc = np.conjugate(r)
+        -1.0j*g*ac*a*a 
+    rc = -1.0j*delta*ac \
+        - gamma*ac \
+        + f.conjugate()  \
+        + 1.0j*g*ac*ac*a 
+    return np.array([r.real,r.imag,rc.real,rc.imag],dtype=np.float64)
+
+def dlan(x,t,delta,g,gamma,f,a0):
+    a = x[0] + 1.0j*x[1]
+    ac = x[2] + 1.0j*x[3]
+    n = a0*a0.conjugate()
+    r = (1.0j*delta-gamma-2.0j*g*n)*a \
+        -1.0j*g*a0**2*ac
+    rc = (-1.0j*delta-gamma+2.0j*g*n)*ac \
+        + 1.0j*g*a0.conjugate()**2*a
     return np.array([r.real,r.imag,rc.real,rc.imag],dtype=np.float64)
 
 def noise(delta,g,gamma,xi,f):
@@ -22,7 +36,8 @@ def noise(delta,g,gamma,xi,f):
     return np.sqrt(gamma)*xi()
 
 def sqD(g,gamma,a):
-    return linalg.sqrtm([[-1.0j*g*a**2,2*gamma],[2*gamma,-1.0j*g*a.conjugate()**2]])
+    return linalg.sqrtm([[-1.0j*g*a**2,2*gamma],
+                         [2*gamma,-1.0j*g*a.conjugate()**2]])
 
 def run(y0, t, btw, delta, g, gamma, f, a0, n = 1):
     print y0, delta, g, gamma
@@ -31,10 +46,7 @@ def run(y0, t, btw, delta, g, gamma, f, a0, n = 1):
     xi_var = 1.0
 
     D = sqD(g,gamma,a0)
-
-    D = np.array([[ 0.48166149+0.4800088j, 0.01247829-0.01247829j],
-         [ 0.01247829-0.01247829j, 0.48166149+0.4800088j]])
-
+    
     print D[0,:]
     print D[1,:]
 
@@ -72,7 +84,7 @@ gamma_array = [0.012]
 # delta_array = np.arange(0.0,1.0,0.3)
 delta_array = [7.44]
 
-t = np.arange(0,50.0,0.01)
+t = np.arange(0,.1,0.001)
 btw = 100
 
 # g_array = np.arange(0.0,1.0,0.3)
@@ -83,14 +95,16 @@ y0 = []
 #     for y in np.arange(-30.0,30.0,5):
 #         y0.append((x,y))
 
-y0 = [ (0.01232253,7.16545308,0.01232253,-7.16545308)]
-n = 100
+y0 = [ (0.24051713,-31.65591378,0.24051713,31.65591378)]
+# y0 = [ (0.9,-32,0.9,32.0)]
+n = 10000
+
 
 pro = []
 
 MAXP = 6
 
-a0 = 0.01232253+7.16545308j
+a0 = 0.24051713-31.65591378j
 
 for g in g_array:
     for f in f_array:
