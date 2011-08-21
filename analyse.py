@@ -48,6 +48,7 @@ pl.plot(acr_avg,-1.0*aci_avg)
 pl.show()
 
 pl.plot(t,np.sqrt((ar_avg-acr_avg)**2+(ai_avg+aci_avg)**2))
+pl.title("abstand")
 pl.show()
 
 n_avg = np.zeros_like(t)

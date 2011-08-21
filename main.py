@@ -37,7 +37,7 @@ def noise(delta,g,gamma,xi,f):
 
 def sqD(g,gamma,a):
     return linalg.sqrtm([[-1.0j*g*a**2,2*gamma],
-                         [2*gamma,-1.0j*g*a.conjugate()**2]])
+                         [2*gamma,1.0j*g*a.conjugate()**2]])
 
 def run(y0, t, btw, delta, g, gamma, f, a0, n = 1):
     print y0, delta, g, gamma
@@ -58,7 +58,7 @@ def run(y0, t, btw, delta, g, gamma, f, a0, n = 1):
         for i in range(n):
             xi1 = sp.random.normal(xi_mean,xi_var,int(len(t)*btw))
             xi2 = sp.random.normal(xi_mean,xi_var,int(len(t)*btw))
-            print "random numbers generated"
+            print "random numbers generated",np.mean(xi1),np.mean(xi2)
 
             print y
             # k = ku.RK4(lan,y,t,btw,noise, \
@@ -85,7 +85,7 @@ gamma_array = [0.012]
 delta_array = [7.44]
 
 t = np.arange(0,.1,0.001)
-btw = 100
+btw = 1
 
 # g_array = np.arange(0.0,1.0,0.3)
 g_array = [0.009]
@@ -95,9 +95,9 @@ y0 = []
 #     for y in np.arange(-30.0,30.0,5):
 #         y0.append((x,y))
 
-y0 = [ (0.24051713,-31.65591378,0.24051713,31.65591378)]
-# y0 = [ (0.9,-32,0.9,32.0)]
-n = 10000
+# y0 = [ (0.24051713,-31.65591378,0.24051713,31.65591378)]
+y0 = [ (2.0,-32,2.0,32.0)]
+n = 1000
 
 
 pro = []
