@@ -56,24 +56,24 @@ f_array = [lambda t: 0.3,lambda t: 1.0, lambda t: 3.0]
 f_array = [lambda t: 0.0]
 
 gamma_array = np.arange(0.001,0.1,0.02)
-gamma_array = [1.0,0.1,5.0]
+gamma_array = [0.1]
 
 # delta_array = np.arange(0.0,1.0,0.3)
 delta_array = [0.0]
 
-t = np.arange(0,5.0,0.01)
-btw = 5
+t = np.arange(0,10.0,0.01)
+btw = 1
 
 # g_array = np.arange(0.0,1.0,0.3)
-g_array = [0.1,1.0,-0.5]
+g_array = [0.01]
 y0 = []
 
 # for x in np.arange(-30.0,30.0,5):
 #     for y in np.arange(-30.0,30.0,5):
 #         y0.append((x,y))
 
-y0 = [ (0.0,0.0)]
-n = 10
+y0 = [ (1.0,0.0)]
+n = 1000
 
 pro = []
 

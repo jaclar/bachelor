@@ -12,11 +12,33 @@ meta, t, plots = save.load(filename)
 for key,value in meta.items():
     print key, ":", value
 
+fig_width_pt = 441.0  # Get this from LaTeX using \showthe\columnwidth
+inches_per_pt = 1.0/72.27               # Convert pt to inch
+golden_mean = (np.sqrt(5)-1.0)/2.0         # Aesthetic ratio
+fig_width = fig_width_pt*inches_per_pt  # width in inches
+fig_height = fig_width      
+fig_size =  [fig_width,fig_height]
+
+params = {'backend': 'ps',
+          'axes.labelsize': 10,
+          'text.fontsize': 10,
+          'legend.fontsize': 10,
+          'xtick.labelsize': 8,
+          'ytick.labelsize': 8,
+          'text.usetex': True,
+          'figure.figsize': fig_size}
+pl.rcParams.update(params)
+
+
+pl.xlim(-25,25)
+pl.ylim(-35,15)
+pl.axvline(x=0,color='black')
+pl.axhline(y=0,color='black')
 for p in plots:
-    pl.plot(p[:,0],p[:,1])
-    pl.title("Phasenraum (Gesamt)")
-    pl.xlabel("$\Re a$")
-    pl.ylabel("$\Im a$")
+    pl.plot(p[:,0],p[:,1],'k')
+    # pl.title("Phasenraum (Gesamt)")
+    pl.xlabel("$p$")
+    pl.ylabel("$x")
 pl.show()
 
 
@@ -30,10 +52,35 @@ for p in plots:
 # pl.plot(t,n_avg/len(plots))
 pl.show()
 
+
+print len(plots) 
+
+fig_width_pt = 441.0  # Get this from LaTeX using \showthe\columnwidth
+inches_per_pt = 1.0/72.27               # Convert pt to inch
+golden_mean = (np.sqrt(5)-1.0)/2.0         # Aesthetic ratio
+fig_width = fig_width_pt*inches_per_pt  # width in inches
+fig_height = fig_width*golden_mean      # height in inches
+fig_size =  [fig_width,fig_height]
+
+params = {'backend': 'ps',
+          'axes.labelsize': 10,
+          'text.fontsize': 10,
+          'legend.fontsize': 10,
+          'xtick.labelsize': 8,
+          'ytick.labelsize': 8,
+          'text.usetex': True,
+          'figure.figsize': fig_size}
+pl.rcParams.update(params)
+
+nmeta, nt, nplots = save.load('data/data-2011-08-21T20:54:15.632081.npz')
+
+
 pl.ylabel("$a^*a=n$")
 pl.xlabel("$t$")
-pl.title("Moden")
-pl.plot(t,n_avg/len(plots))
+pl.ylim(0.0,1.4)
+pl.plot(t,n_avg/len(plots),'k')
+pl.plot(t,nplots[0],'--k')
+
 pl.show()
 
 
@@ -71,7 +118,7 @@ for p in plots:
     n += 1
     if (p[-1,0]**2 +  p[-1,1]**2) > 700:
         x = p[:,0] + 1.0j*p[:,1]
-        corr = np.correlate(x,x,"same")
+        # corr = np.correlate(x,x,"same")
         # pl.plot(np.real(corr))
         # pl.plot(np.imag(corr))
         # pl.show()
