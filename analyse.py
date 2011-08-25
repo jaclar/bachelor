@@ -72,15 +72,16 @@ params = {'backend': 'ps',
           'figure.figsize': fig_size}
 pl.rcParams.update(params)
 
-nmeta, nt, nplots = save.load('data/data-2011-08-21T20:54:15.632081.npz')
+# nmeta, nt, nplots = save.load('data/data-2011-08-21T20:54:20.460890.npz')
 
+nmeta, nt, nplots = save.load('data/data-2011-08-21T20:54:15.632081.npz')
 
 pl.ylabel("$a^*a=n$")
 pl.xlabel("$t$")
 pl.ylim(0.0,1.4)
-pl.plot(t,n_avg/len(plots),'k')
-pl.plot(t,nplots[0],'--k')
-
+pl.plot(t,n_avg/len(plots),'k',label="mit Rauschen")
+pl.plot(t,nplots[0][:,0]**2+nplots[0][:,1]**2,'--k',label="ohne Rauschen")
+pl.legend(loc=3)
 pl.show()
 
 

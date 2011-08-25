@@ -5,8 +5,10 @@ import os
 from scipy.interpolate import Rbf
 
 filename = os.sys.argv[1]
+filename2 = os.sys.argv[2]
 
 meta, t, plots = save.load(filename)
+meta2, t2, plots2 = save.load(filename2)
 
 def smooth(p,n):
     X = np.zeros(int(len(p)/n))
@@ -46,10 +48,29 @@ for p in plots:
 nmean /= i
 rmean /= i
 
-pl.plot(t,nmean)
-pl.title("Mittelwert")
+nmean2 = np.zeros_like(t2)
+rmean2 = np.zeros_like(plots2[0])
+i = 0
+for p in plots2:
+    #if (p[-1,0]**2 +  p[-1,1]**2) > 700:
+    i +=1
+    nmean2 += p[:,0]**2+p[:,1]**2
+    rmean2 += p
+
+nmean2 /= i
+rmean2 /= i
+
+
+pl.plot(t,nmean,color='lightgrey')
+pl.plot(t2,nmean2,color='lightgrey',label='Mittelwert von n')
+snm = smooth(nmean,400)
+snm2 = smooth(nmean2,400)
+pl.plot(snm[0],snm[1],'k',label="Angeregter Zustand")
+pl.plot(snm2[0],snm2[1],'k--',label="Grundzustand")
 pl.xlabel("$t$")
 pl.ylabel("$\langle n \\rangle$")
+pl.xlim(0.0,300.0)
+pl.legend(loc=5)
 pl.show()
 
 nvar = np.zeros_like(t)
@@ -72,13 +93,15 @@ pl.plot(snvar[0],snvar[1])
 pl.show()
 
 pl.xlim(0.0,300.0)
-pl.plot(t,rvar,color='lightgrey')
+pl.plot(t,rvar[:,0],color='lightgrey')
+pl.plot(t,rvar[:,1],color='lightgrey',label="Varianz")
+
 pl.xlabel("$t$")
-pl.ylabel("$\langle \Delta x \\rangle, \langle \Delta p \\rangle$")
+pl.ylabel("$\langle (\Delta x)^2 \\rangle, \langle (\Delta p)^2 \\rangle$")
 sxvar = smooth(rvar[:,0],400)
 spvar = smooth(rvar[:,1],400)
-pl.plot(sxvar[0],sxvar[1],'--k')
-pl.plot(spvar[0],spvar[1],'k')
-
+pl.plot(sxvar[0],sxvar[1],'--k',label="Trendlinie x")
+pl.plot(spvar[0],spvar[1],'k',label="Trendlinie p")
+pl.legend(loc=2)
 pl.show()
 

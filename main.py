@@ -65,7 +65,7 @@ t = np.arange(0,10.0,0.01)
 btw = 1
 
 # g_array = np.arange(0.0,1.0,0.3)
-g_array = [0.01]
+g_array = [0.01,0.0]
 y0 = []
 
 # for x in np.arange(-30.0,30.0,5):
