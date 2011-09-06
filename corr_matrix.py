@@ -4,14 +4,15 @@ import kutta as ku
 import save
 import os
 
+# Trajektorien laden
 filename = os.sys.argv[1]
-
 meta, t, plots = save.load(filename)
 
-
+# Metadaten ausgeben
 for key,value in meta.items():
     print key, ":", value
 
+# Mittelwerte berechnen
 a2_avg = np.zeros(len(t),dtype=np.complex128)
 a_avg2 = np.zeros(len(t),dtype=np.complex128)
 ac2_avg = np.zeros(len(t),dtype=np.complex128)
@@ -21,7 +22,6 @@ aca_avg = np.zeros(len(t),dtype=np.complex128)
 
 for p in plots:
     a = p[:,0]+1.0j*p[:,1]
-    # ac = p[:,2]+1.0j*p[:,3]
     ac = p[:,0]-1.0j*p[:,1]
     a2_avg += a**2
     a_avg2 += a
@@ -44,6 +44,7 @@ print "ac2_avg", ac2_avg
 print "ac_avg2", ac_avg2
 print "acam_avg", acam_avg
 
+# Korrelationsmatrix ausgeben
 for i in range(0,100,10):
     print i
     

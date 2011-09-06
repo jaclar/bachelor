@@ -54,7 +54,7 @@ def run(y0, t, btw, delta, g, gamma, f, a0, n = 1):
     if y0.shape == (2,):
         y0 = np.array([y0])
     
-    # iteration ueber alle Startwerte
+    # Iteration ueber alle Startwerte
     for y in y0:
         # Anzahl der Realisierungen
         for i in range(n):
@@ -63,15 +63,8 @@ def run(y0, t, btw, delta, g, gamma, f, a0, n = 1):
             print "random numbers generated",np.mean(xi1),np.mean(xi2)
 
             print y
-            # k = ku.RK4(lan,y,t,btw,noise, \
-            #              args=(delta,g,gamma,xi,f))
-            # k = integrate.odeint(lan,y,t, \
-            #                        args=(delta,g,gamma,xi,f))
             k = eu.euler(lan,y,t,btw,D,xi1,xi2, \
                             args=(delta,g,gamma,f))
-
-            # k = eu.euler(oup,y,t,btw,oup_noise, \
-            #                  args=(2.0,0.0,1.0))
             data.append(k)
     save.save(xi_var,xi_mean,gamma,delta,g,f,data,"data")
 
